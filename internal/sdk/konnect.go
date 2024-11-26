@@ -75,6 +75,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 // https://docs.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
+	Meshes                         *Meshes
 	Mesh                           *Mesh
 	APIProducts                    *APIProducts
 	APIProductDocumentation        *APIProductDocumentation
@@ -312,6 +313,8 @@ func New(opts ...SDKOption) *Konnect {
 	}
 
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
+
+	sdk.Meshes = newMeshes(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
