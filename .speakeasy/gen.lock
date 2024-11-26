@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: eceaafa8f83b81bf1062ee8945d136c9
+  docChecksum: 7aab7e0daa1213e6c4ed3daf8e513188
   docVersion: 2.0.0
   speakeasyVersion: 1.438.1
   generationVersion: 2.457.2
@@ -1132,6 +1132,7 @@ generatedFiles:
   - internal/sdk/keysets.go
   - internal/sdk/konnect.go
   - internal/sdk/mesh.go
+  - internal/sdk/meshes.go
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/models/operations/addconsumertogroup.go
   - internal/sdk/models/operations/addusertoteam.go
@@ -1477,6 +1478,7 @@ generatedFiles:
   - internal/sdk/models/operations/getudplogplugin.go
   - internal/sdk/models/operations/getupstream.go
   - internal/sdk/models/operations/getupstreamtimeoutplugin.go
+  - internal/sdk/models/operations/getv1meshcontrolplanescpidapimeshesmeshname.go
   - internal/sdk/models/operations/getvault.go
   - internal/sdk/models/operations/getvaultauthplugin.go
   - internal/sdk/models/operations/getwebsocketsizelimitplugin.go
@@ -1494,6 +1496,7 @@ generatedFiles:
   - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
   - internal/sdk/models/operations/postsystemaccountsidaccesstokens.go
   - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
+  - internal/sdk/models/operations/putv1meshcontrolplanescpidapimeshesmeshname.go
   - internal/sdk/models/operations/removeconsumerfromgroup.go
   - internal/sdk/models/operations/removeuserfromteam.go
   - internal/sdk/models/operations/replaceportalproductversion.go
@@ -7432,3 +7435,15 @@ examples:
           application/problem+json: {"status": 237077, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get_/v1/mesh/control-planes/{cpId}/api/meshes/{meshName}:
+    "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          meshName: "<value>"
+  put_/v1/mesh/control-planes/{cpId}/api/meshes/{meshName}:
+    "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          meshName: "<value>"
