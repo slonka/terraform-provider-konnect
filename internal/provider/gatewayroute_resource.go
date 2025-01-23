@@ -22,6 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -40,28 +41,28 @@ type GatewayRouteResource struct {
 
 // GatewayRouteResourceModel describes the resource data model.
 type GatewayRouteResourceModel struct {
-	ControlPlaneID          types.String            `tfsdk:"control_plane_id"`
-	CreatedAt               types.Int64             `tfsdk:"created_at"`
-	Destinations            []tfTypes.ClusterNodes  `tfsdk:"destinations"`
-	Headers                 map[string]types.String `tfsdk:"headers"`
-	Hosts                   []types.String          `tfsdk:"hosts"`
-	HTTPSRedirectStatusCode types.Int64             `tfsdk:"https_redirect_status_code"`
-	ID                      types.String            `tfsdk:"id"`
-	Methods                 []types.String          `tfsdk:"methods"`
-	Name                    types.String            `tfsdk:"name"`
-	PathHandling            types.String            `tfsdk:"path_handling"`
-	Paths                   []types.String          `tfsdk:"paths"`
-	PreserveHost            types.Bool              `tfsdk:"preserve_host"`
-	Protocols               []types.String          `tfsdk:"protocols"`
-	RegexPriority           types.Int64             `tfsdk:"regex_priority"`
-	RequestBuffering        types.Bool              `tfsdk:"request_buffering"`
-	ResponseBuffering       types.Bool              `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLConsumer    `tfsdk:"service" tfPlanOnly:"true"`
-	Snis                    []types.String          `tfsdk:"snis"`
-	Sources                 []tfTypes.ClusterNodes  `tfsdk:"sources"`
-	StripPath               types.Bool              `tfsdk:"strip_path"`
-	Tags                    []types.String          `tfsdk:"tags"`
-	UpdatedAt               types.Int64             `tfsdk:"updated_at"`
+	ControlPlaneID          types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt               types.Int64                        `tfsdk:"created_at"`
+	Destinations            []tfTypes.ClusterNodes             `tfsdk:"destinations"`
+	Headers                 map[string][]types.String          `tfsdk:"headers"`
+	Hosts                   []types.String                     `tfsdk:"hosts"`
+	HTTPSRedirectStatusCode types.Int64                        `tfsdk:"https_redirect_status_code"`
+	ID                      types.String                       `tfsdk:"id"`
+	Methods                 []types.String                     `tfsdk:"methods"`
+	Name                    types.String                       `tfsdk:"name"`
+	PathHandling            types.String                       `tfsdk:"path_handling"`
+	Paths                   []types.String                     `tfsdk:"paths"`
+	PreserveHost            types.Bool                         `tfsdk:"preserve_host"`
+	Protocols               []types.String                     `tfsdk:"protocols"`
+	RegexPriority           types.Int64                        `tfsdk:"regex_priority"`
+	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
+	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Snis                    []types.String                     `tfsdk:"snis"`
+	Sources                 []tfTypes.ClusterNodes             `tfsdk:"sources"`
+	StripPath               types.Bool                         `tfsdk:"strip_path"`
+	Tags                    []types.String                     `tfsdk:"tags"`
+	UpdatedAt               types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -103,10 +104,15 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
 			},
-			"headers": schema.MapAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
+			"headers": schema.MapNestedAttribute{
+				Computed: true,
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.List{
+						speakeasy_listvalidators.NotNull(),
+					},
+					Attributes: map[string]schema.Attribute{},
+				},
 				Description: `One or more lists of values indexed by header name that will cause this Route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
 			},
 			"hosts": schema.ListAttribute{

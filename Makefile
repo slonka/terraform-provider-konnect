@@ -9,9 +9,9 @@ speakeasy: check-speakeasy
 	speakeasy run --skip-versioning --output console
 	@go mod tidy
 	@go generate .
-	@git clean -fd examples docs > /dev/null
-	@git checkout -- README.md examples/README.md
-	@rm USAGE.md
+#	@git clean -fd examples docs > /dev/null
+#	@git checkout -- README.md examples/README.md
+#	@rm USAGE.md
 
 FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
 remove-data-sources:
