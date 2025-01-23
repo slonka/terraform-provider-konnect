@@ -1,4 +1,0 @@
-# Developer documentation
-
-## Running locally
-
